@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Intimacy Gap — ND Affinity Group</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --rose:       #FDA4AF;
+      --deep-rose:  #F43F5E;
+      --lavender:   #C084FC;
+      --deep-lav:   #9333EA;
+      --teal:       #5EEAD4;
+      --deep-teal:  #14B8A6;
+      --calm-blue:  #93C5FD;
+      --midnight:   #1E293B;
+      --slate:      #475569;
+      --warm-gray:  #6B6B6B;
+      --pearl:      #F8FAFC;
+      --cream:      #FFF8F0;
+
+      --grad-warm:    linear-gradient(135deg, #FDA4AF 0%, #C084FC 100%);
+      --grad-rose-lav:linear-gradient(135deg, #F43F5E 0%, #9333EA 100%);
+      --grad-nature:  linear-gradient(135deg, #5EEAD4 0%, #93C5FD 100%);
+      --grad-soft:    linear-gradient(135deg, #FDA4AF22 0%, #C084FC22 100%);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #FDA4AF0D 0%, #C084FC0D 100%);
+      min-height: 100vh;
+      color: var(--midnight);
+      overflow-x: hidden;
+    }
+
+    /* ── Background blobs ── */
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(70px);
+      opacity: 0.22;
+      animation: drift 22s infinite ease-in-out;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .blob1 { width:340px;height:340px;background:var(--rose);    top:-120px;right:-100px; }
+    .blob2 { width:420px;height:420px;background:var(--lavender);bottom:-160px;left:-140px;animation-delay:-7s; }
+    .blob3 { width:260px;height:260px;background:var(--calm-blue);top:48%;right:8%;animation-delay:-13s; }
+
+    @keyframes drift {
+      0%,100% { transform: translate(0,0) scale(1); }
+      33%      { transform: translate(28px,-28px) scale(1.08); }
+      66%      { transform: translate(-18px,18px) scale(0.93); }
+    }
+
+    /* ── Layout ── */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Header ── */
+    .site-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .site-header h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      line-height: 1.2;
+      background: var(--grad-rose-lav);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.4rem;
+    }
+    .site-header .subtitle {
+      color: var(--warm-gray);
+      font-size: 1.05rem;
+    }
+
+    /* ── Progress bar ── */
+    .progress-wrap {
+      background: rgba(253,164,175,0.18);
+      border-radius: 10px;
+      height: 7px;
+      margin-bottom: 2rem;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--grad-warm);
+      border-radius: 10px;
+      transition: width 0.45s ease;
+    }
+
+    /* ── Nav pills ── */
+    .nav-pills {
+      display: flex;
+      gap: 0.6rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+    .nav-pill {
+      padding: 0.55rem 1.3rem;
+      border-radius: 50px;
+      background: white;
+      border: 2px solid transparent;
+      color: var(--slate);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+      transition: all 0.25s ease;
+    }
+    .nav-pill:hover { transform: translateY(-2px); box-shadow: 0 5px 16px rgba(0,0,0,0.11); }
+    .nav-pill.active { background: var(--grad-warm); color: white; }
+
+    /* ── Pages ── */
+    .page { display: none; animation: fadeUp 0.5s ease; }
+    .page.active { display: block; }
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(18px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 8px 36px rgba(0,0,0,0.07);
+      margin-bottom: 1.8rem;
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow 0.3s;
+    }
+    .card::before {
+      content:'';
+      position:absolute;top:0;left:0;right:0;height:4px;
+      background: var(--grad-warm);
+    }
+    .card.teal::before   { background: var(--grad-nature); }
+    .card.lav::before    { background: linear-gradient(135deg,#C084FC,#93C5FD); }
+
+    .card h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--midnight);
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .icon-circle {
+      width: 38px; height: 38px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      color: white;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .icon-warm { background: var(--grad-warm); }
+    .icon-teal { background: var(--grad-nature); }
+    .icon-lav  { background: linear-gradient(135deg,#C084FC,#93C5FD); }
+
+    /* ── Timing badge ── */
+    .timing-badge {
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      background: rgba(253,164,175,0.15);
+      color: var(--deep-rose);
+      margin-left: auto;
+    }
+
+    /* ── Pass reminder ── */
+    .pass-reminder {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.7rem;
+      background: rgba(192,132,252,0.08);
+      border-left: 3px solid var(--lavender);
+      padding: 0.8rem 1rem;
+      border-radius: 0 10px 10px 0;
+      margin-bottom: 1.4rem;
+      font-size: 0.92rem;
+      color: var(--slate);
+    }
+    .pass-reminder .sym { color: var(--lavender); font-size: 1rem; margin-top:2px; flex-shrink:0; }
+
+    /* ── Info blocks ── */
+    .info-block {
+      padding: 1.2rem 1.4rem;
+      border-radius: 14px;
+      margin-bottom: 1.1rem;
+    }
+    .info-block h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+    .info-block ul {
+      list-style: none;
+      color: var(--slate);
+      line-height: 1.85;
+    }
+    .info-block ul li::before { content: "◆ "; color: inherit; font-size: 0.75rem; }
+
+    .info-block.rose    { background: rgba(253,164,175,0.12); }
+    .info-block.rose h3 { color: var(--deep-rose); }
+    .info-block.rose ul li::before { color: var(--deep-rose); }
+
+    .info-block.lav     { background: rgba(192,132,252,0.10); }
+    .info-block.lav h3  { color: var(--deep-lav); }
+    .info-block.lav ul li::before { color: var(--lavender); }
+
+    .info-block.teal    { background: rgba(94,234,212,0.10); }
+    .info-block.teal h3 { color: var(--deep-teal); }
+    .info-block.teal ul li::before { color: var(--deep-teal); }
+
+    .info-block.blue    { background: rgba(147,197,253,0.12); }
+    .info-block.blue h3 { color: #2563EB; }
+    .info-block.blue ul li::before { color: #60A5FA; }
+
+    /* ── Validation / core message box ── */
+    .validation-box {
+      background: var(--grad-soft);
+      border-radius: 14px;
+      padding: 1.2rem 1.5rem;
+      margin: 1.2rem 0;
+      color: var(--slate);
+      line-height: 1.75;
+      font-size: 0.97rem;
+    }
+    .validation-box strong { color: var(--deep-rose); }
+
+    /* ── Discussion prompt cards ── */
+    .discussion-list { display: flex; flex-direction: column; gap: 1rem; }
+    .d-card {
+      background: var(--pearl);
+      border-radius: 14px;
+      padding: 1.1rem 1.4rem;
+      border-left: 4px solid var(--rose);
+      line-height: 1.7;
+      color: var(--slate);
+      font-size: 0.97rem;
+    }
+    .d-card.lav { border-color: var(--lavender); }
+    .d-card.teal{ border-color: var(--teal); }
+    .d-card .q-label {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.15rem 0.5rem;
+      border-radius: 6px;
+      margin-bottom: 0.4rem;
+      background: rgba(253,164,175,0.2);
+      color: var(--deep-rose);
+    }
+    .d-card.lav .q-label { background: rgba(192,132,252,0.15); color: var(--deep-lav); }
+    .d-card.teal .q-label{ background: rgba(94,234,212,0.15); color: var(--deep-teal); }
+    .d-card p { margin: 0; }
+
+    /* ── Rose/Bud/Thorn ── */
+    .rbt-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .rbt-card {
+      padding: 1.2rem;
+      border-radius: 14px;
+      text-align: center;
+    }
+    .rbt-card .rbt-sym { font-size: 1.8rem; margin-bottom: 0.5rem; }
+    .rbt-card h4 { font-weight: 700; margin-bottom: 0.35rem; font-size: 1rem; }
+    .rbt-card p  { font-size: 0.88rem; color: var(--slate); line-height: 1.55; }
+    .rbt-card.rose-c  { background: rgba(253,164,175,0.12); }
+    .rbt-card.rose-c h4 { color: var(--deep-rose); }
+    .rbt-card.bud-c   { background: rgba(94,234,212,0.10); }
+    .rbt-card.bud-c h4 { color: var(--deep-teal); }
+    .rbt-card.thorn-c { background: rgba(192,132,252,0.10); }
+    .rbt-card.thorn-c h4 { color: var(--deep-lav); }
+
+    /* ── Affirmations ── */
+    .affirmation-list { display: flex; flex-direction: column; gap: 0.85rem; margin-top: 1rem; }
+    .aff-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.9rem 1.1rem;
+      background: rgba(253,164,175,0.07);
+      border-radius: 12px;
+      font-size: 0.97rem;
+      color: var(--slate);
+      line-height: 1.65;
+    }
+    .aff-sym { color: var(--rose); font-size: 1.1rem; flex-shrink: 0; margin-top: 2px; }
+
+    /* ── Facilitator toggle ── */
+    .fac-toggle {
+      background: rgba(147,197,253,0.12);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-top: 1.2rem;
+    }
+    .fac-toggle-btn {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 0.85rem 1.2rem;
+      text-align: left;
+      cursor: pointer;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #2563EB;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .fac-toggle-content {
+      display: none;
+      padding: 0 1.2rem 1rem;
+      font-size: 0.9rem;
+      color: var(--slate);
+      line-height: 1.7;
+    }
+    .fac-toggle-content.open { display: block; }
+
+    /* ── Buttons ── */
+    .btn-row {
+      display: flex;
+      gap: 0.8rem;
+      justify-content: flex-end;
+      margin-top: 1.8rem;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      padding: 0.7rem 1.8rem;
+      background: var(--grad-warm);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(244,63,94,0.25);
+      transition: all 0.25s ease;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(244,63,94,0.32); }
+    .btn-secondary {
+      padding: 0.7rem 1.8rem;
+      background: white;
+      color: var(--deep-rose);
+      border: 2px solid var(--rose);
+      border-radius: 50px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .btn-secondary:hover { background: rgba(253,164,175,0.08); transform: translateY(-2px); }
+
+    /* ── Closing script ── */
+    .closing-script {
+      background: linear-gradient(135deg, rgba(253,164,175,0.08), rgba(192,132,252,0.08));
+      border-radius: 16px;
+      padding: 1.5rem 1.8rem;
+      border: 1px solid rgba(192,132,252,0.2);
+      font-style: italic;
+      color: var(--slate);
+      line-height: 1.85;
+      font-size: 0.97rem;
+    }
+    .closing-script strong { color: var(--deep-lav); font-style: normal; }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: var(--warm-gray);
+      font-size: 0.82rem;
+      line-height: 1.6;
+    }
+    footer a { color: var(--deep-teal); text-decoration: none; }
+
+    /* ── Responsive ── */
+    @media (max-width: 700px) {
+      .site-header h1 { font-size: 1.8rem; }
+      .container { padding: 1rem; }
+      .card { padding: 1.4rem; }
+      .nav-pill { font-size: 0.8rem; padding: 0.45rem 0.9rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+<div class="blob blob3"></div>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="site-header">
+    <h1>The Intimacy Gap</h1>
+    <p class="subtitle">Neurodivergent Affinity Group &nbsp;·&nbsp; Connection, Closeness & Communication</p>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-wrap">
+    <div class="progress-fill" id="progressFill" style="width:20%"></div>
+  </div>
+
+  <!-- Nav pills -->
+  <div class="nav-pills">
+    <button class="nav-pill active" onclick="goTo(0)">Opening</button>
+    <button class="nav-pill"        onclick="goTo(1)">Understanding</button>
+    <button class="nav-pill"        onclick="goTo(2)">Large Group</button>
+    <button class="nav-pill"        onclick="goTo(3)">Breakouts</button>
+    <button class="nav-pill"        onclick="goTo(4)">Closing</button>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- PAGE 0 · OPENING                        -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="page active" id="page0">
+
+    <div class="card">
+      <h2>
+        <div class="icon-circle icon-warm">◈</div>
+        Welcome &amp; Safety Container
+        <span class="timing-badge">8–10 min</span>
+      </h2>
+
+      <p style="color:var(--slate);line-height:1.75;margin-bottom:1.2rem;">
+        Today we're exploring a topic that sits close to the bone for a lot of ND folks — 
+        the experience of feeling a lot inside and struggling to get it across, or to let others in. 
+        There's no pressure to share anything you're not ready for.
+      </p>
+
+      <div class="pass-reminder">
+        <span class="sym">◇</span>
+        <div>Passes are always okay — on any question, at any moment. Listening is full participation.</div>
+      </div>
+
+      <div class="fac-toggle">
+        <button class="fac-toggle-btn" onclick="toggleFac(this)">
+          ▶ Facilitator opening script
+        </button>
+        <div class="fac-toggle-content">
+          "Welcome, everyone. Before we start I want to acknowledge something: for a lot of neurodivergent people, 
+          closeness with others is genuinely complicated — not because you don't want it, but because 
+          the wiring between what you feel and how you express it, or how you receive it, doesn't always 
+          work the way other people expect. Today we're going to name some of that honestly, 
+          without trying to fix it. As always: fidget, move, keep your camera off, pass — whatever you need 
+          to be present in a way that works for you."
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>
+        <div class="icon-circle icon-warm">✦</div>
+        Rose / Bud / Thorn
+        <span class="timing-badge">5 min</span>
+      </h2>
+
+      <p style="color:var(--slate);line-height:1.75;margin-bottom:1rem;">
+        Go around the room. Each person shares one of the three — whatever fits where they are today.
+      </p>
+
+      <div class="rbt-grid">
+        <div class="rbt-card rose-c">
+          <div class="rbt-sym">◆</div>
+          <h4>Rose</h4>
+          <p>Something that's been good or working — a moment of connection that felt real recently.</p>
+        </div>
+        <div class="rbt-card bud-c">
+          <div class="rbt-sym">◇</div>
+          <h4>Bud</h4>
+          <p>Something just beginning — a relationship or connection you're trying to tend to.</p>
+        </div>
+        <div class="rbt-card thorn-c">
+          <div class="rbt-sym">△</div>
+          <h4>Thorn</h4>
+          <p>Something that's been hard lately — a moment you wanted closeness and it didn't land.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card lav">
+      <h2>
+        <div class="icon-circle icon-lav">◉</div>
+        Topic Bridge Question
+        <span class="timing-badge">2–3 min, optional</span>
+      </h2>
+
+      <p style="color:var(--slate);line-height:1.75;margin-bottom:1rem;">
+        One quick opener before we go into the material — no wrong answers.
+      </p>
+
+      <div class="d-card lav">
+        <div class="q-label">Bridge</div>
+        <p>Is there a type of closeness that comes easily for you, and a type that feels almost impossible — even when you want it?</p>
+      </div>
+
+      <div class="fac-toggle" style="margin-top:1rem;">
+        <button class="fac-toggle-btn" onclick="toggleFac(this)">▶ Facilitator note</button>
+        <div class="fac-toggle-content">
+          This question is just to get the topic in the room before the psychoeducation. 
+          You don't need to process answers deeply here — a quick round, one sentence each, is enough. 
+          Notice themes to come back to during Large Group.
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" onclick="goTo(1)">Understanding →</button>
+    </div>
+
+  </div><!-- /page0 -->
+
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- PAGE 1 · PSYCHOEDUCATION                -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="page" id="page1">
+
+    <div class="card">
+      <h2>
+        <div class="icon-circle icon-warm">◈</div>
+        What Is the Intimacy Gap?
+      </h2>
+
+      <p style="color:var(--slate);line-height:1.75;margin-bottom:1.2rem;">
+        The intimacy gap is the space between how much you feel and how much gets through — 
+        outward or inward. It's not indifference. It's not not caring. It's a mismatch in the 
+        machinery of connection.
+      </p>
+
+      <div class="validation-box">
+        <strong>Core message:</strong> Many ND people experience closeness intensely on the inside while 
+        appearing distant, flat, or hard to reach from the outside. Others are open and reaching but 
+        can't interpret the signals coming back. Neither of these is a character flaw. They're nervous 
+        system differences meeting a world that built its relationship templates around neurotypical wiring.
+      </div>
+
+      <div class="info-block rose">
+        <h3>The gap can show up as…</h3>
+        <ul>
+          <li>Feeling deeply bonded to someone you rarely express it to</li>
+          <li>Wanting physical closeness but finding touch overwhelming or unpredictable</li>
+          <li>Struggling to initiate connection even when you're lonely</li>
+          <li>Being perceived as cold by people you feel warmly toward</li>
+          <li>Saying "I love you" through actions, but those actions going unread</li>
+          <li>Feeling flooded by someone else's emotional proximity</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card teal">
+      <h2>
+        <div class="icon-circle icon-teal">◉</div>
+        The Sensory Layer of Closeness
+      </h2>
+
+      <p style="color:var(--slate);line-height:1.75;margin-bottom:1.2rem;">
+        Physical and sensory closeness is how most people communicate intimacy — and it's also 
+        one of the most common places the gap opens up for ND folks.
+      </p>
+
+      <div class="info-block teal">
+        <h3>Touch</h3>
+        <ul>
+          <li>Hypersensitivity can make affectionate touch feel painful, intrusive, or overstimulating</li>
+          <li>Touch preferences can be inconsistent — fine one day, intolerable the next</li>
+          <li>Needing to initiate rather than receive touch in order to tolerate it</li>
+          <li>Partners or friends who read "don't touch me right now" as rejection</li>
+        </ul>
+      </div>
+
+      <div class="info-block blue">
+        <h3>Proximity &amp; Eye Contact</h3>
+        <ul>
+          <li>Eye contact can feel intrusive, uncomfortable, or like a cognitive resource drain</li>
+          <li>Sustained eye contact often reads as intimacy to NT people — avoidance reads as distance</li>
+          <li>Physical proximity (sitting close, facing each other) can be activating rather than connecting</li>
+          <li>Some ND people feel most intimate side-by-side — doing parallel activities — not face-to-face</li>
+        </ul>
+      </div>
+
+      <div class="info-block lav">
+        <h3>Sound &amp; Environment</h3>
+        <ul>
+          <li>Noise, lighting, or setting can make emotional connection impossible even when you want it</li>
+          <li>Trying to have a hard conversation in a dysregulating environment often looks like "shutting down"</li>
+          <li>What feels like a neutral coffee shop to a partner may be a sensory gauntlet to you</li>
+        </ul>
+      </div>
+
+      <div class="fac-toggle">
+        <button class="fac-toggle-btn" onclick="toggleFac(this)">▶ Facilitator note</button>
+        <div class="fac-toggle-content">
+          This section often prompts a lot of nodding. Give space here — you can pause and 
+          invite a quick reaction ("anything resonating?") before moving on. 
+          The side-by-side vs. face-to-face point tends to be particularly resonant.
+        </div>
+      </div>
+    </div>
+
+    <div class="card lav">
+      <h2>
+        <div class="icon-circle icon-lav">✦</div>
+        The Communication Layer
+      </h2>
+
+      <p style="color:var(--slate);line-height:1.75;margin-bottom:1.2rem;">
+        Beyond sensory differences, how ND people process and express emotional content 
+        often doesn't match what others are expecting — and the misread goes both ways.
+      </p>
+
+      <div class="info-block lav">
+        <h3>Processing time</h3>
+        <ul>
+          <li>Many ND people need more time to access and articulate emotional content</li>
+          <li>In real-time conversations, this can look like stonewalling, not caring, or being checked out</li>
+          <li>The feelings are there — but the path to language is longer</li>
+        </ul>
+      </div>
+
+      <div class="info-block rose">
+        <h3>Flat affect &amp; deep feeling</h3>
+        <ul>
+          <li>Reduced facial expressiveness doesn't mean reduced emotion</li>
+          <li>Many ND people experience intense emotion while appearing calm or blank</li>
+          <li>This mismatch is regularly misread as indifference, dismissiveness, or not being present</li>
+        </ul>
+      </div>
+
+      <div class="info-block teal">
+        <h3>Indirect expression</h3>
+        <ul>
+          <li>Sharing a special interest, fixing something, sending a relevant article — these are love languages that often don't get decoded</li>
+          <li>Showing up consistently without verbal affirmation reads as caring to many ND people</li>
+          <li>Partners or friends who need explicit verbal expression may feel chronically unseen</li>
+        </ul>
+      </div>
+
+      <div class="info-block blue">
+        <h3>Mismatched repair</h3>
+        <ul>
+          <li>After conflict, ND people may need time alone to regulate — which reads as punishing to others</li>
+          <li>Bids for reconnection can be missed because they're subtle, context-dependent, or indirect</li>
+          <li>NT repair scripts (talking it through immediately, apologies, physical comfort) can feel overwhelming</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>
+        <div class="icon-circle icon-warm">◆</div>
+        It Goes Both Ways: The Double Empathy Problem
+      </h2>
+
+      <p style="color:var(--slate);line-height:1.75;margin-bottom:1.2rem;">
+        Research by Damian Milton introduced the concept of the "double empathy problem" — the idea that 
+        connection breakdowns between ND and NT people aren't a deficit in the ND person. 
+        They're a mismatch between two different ways of processing the social world.
+      </p>
+
+      <div class="validation-box">
+        NT people also struggle to read ND emotional cues, understand ND communication styles, and 
+        recognize ND expressions of care. The gap is bidirectional. The traditional framing — that ND 
+        people lack social or emotional skills — only tracks one side of that equation. 
+        <br><br>
+        <strong>Connection is a shared problem, not a personal failure.</strong>
+      </div>
+
+      <div class="fac-toggle">
+        <button class="fac-toggle-btn" onclick="toggleFac(this)">▶ Facilitator note</button>
+        <div class="fac-toggle-content">
+          The double empathy problem is a genuinely liberating reframe for many ND people 
+          who have spent years blaming themselves for relationship difficulties. 
+          Don't rush past it. It's worth naming explicitly: the research says the gap is mutual, 
+          not one-sided. That's a significant thing for a lot of people in this room to hear.
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-secondary" onclick="goTo(0)">← Opening</button>
+      <button class="btn-primary"   onclick="goTo(2)">Large Group →</button>
+    </div>
+
+  </div><!-- /page1 -->
+
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- PAGE 2 · LARGE GROUP DISCUSSION         -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="page" id="page2">
+
+    <div class="card">
+      <h2>
+        <div class="icon-circle icon-warm">✦</div>
+        Large Group Discussion
+        <span class="timing-badge">15–18 min</span>
+      </h2>
+
+      <p style="color:var(--slate);margin-bottom:0.7rem;line-height:1.75;">
+        These are invitations, not a checklist. One question explored well beats five skimmed. 
+        Follow the group's energy.
+      </p>
+
+      <div class="pass-reminder">
+        <span class="sym">◇</span>
+        <div>Passes are always okay. Listening is full participation.</div>
+      </div>
+
+      <div class="discussion-list">
+
+        <div class="d-card">
+          <div class="q-label">Opening — low stakes</div>
+          <p>What's one word that describes how closeness feels in your body — not emotionally, just physically?</p>
+        </div>
+
+        <div class="d-card">
+          <div class="q-label">Recognition</div>
+          <p>Did anything from the psychoeducation land for you — something you recognized in yourself but didn't have language for before?</p>
+        </div>
+
+        <div class="d-card lav">
+          <div class="q-label">The gap itself</div>
+          <p>Has there been a moment where you felt something strongly for someone — care, love, gratitude — but they didn't seem to know? What was that like?</p>
+        </div>
+
+        <div class="d-card lav">
+          <div class="q-label">Being misread</div>
+          <p>What's the most common way your connection — or your need for space — gets misinterpreted by other people?</p>
+        </div>
+
+        <div class="d-card teal">
+          <div class="q-label">What works</div>
+          <p>Is there a type of closeness or a context where connection actually flows for you? What makes that different?</p>
+        </div>
+
+        <div class="d-card teal">
+          <div class="q-label">Deeper</div>
+          <p>The double empathy problem frames this as a two-way mismatch, not a personal deficit. Does that land for you — or does it feel more complicated than that?</p>
+        </div>
+
+      </div>
+
+      <div class="fac-toggle" style="margin-top:1.2rem;">
+        <button class="fac-toggle-btn" onclick="toggleFac(this)">▶ Facilitator notes</button>
+        <div class="fac-toggle-content">
+          <strong>Sequencing:</strong> Start with Q1 (body sensation — low-demand, no narrative required). 
+          Q2 bridges from the material to personal experience. Q3–Q4 go deeper into the gap itself and 
+          being misread — expect more affect here. Q5–Q6 move toward the constructive: what works, and 
+          whether the reframe holds. <br><br>
+          <strong>Watch for:</strong> Grief coming up around long-standing relationship patterns. 
+          Some group members may have spent years blaming themselves for connection failures — 
+          the double empathy reframe can bring relief and also sadness. Hold space for both.
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-secondary" onclick="goTo(1)">← Understanding</button>
+      <button class="btn-primary"   onclick="goTo(3)">Breakouts →</button>
+    </div>
+
+  </div><!-- /page2 -->
+
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- PAGE 3 · BREAKOUT PAIRS / TRIADS         -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="page" id="page3">
+
+    <div class="card lav">
+      <h2>
+        <div class="icon-circle icon-lav">◉</div>
+        Breakout Pairs or Triads
+        <span class="timing-badge">12–15 min</span>
+      </h2>
+
+      <p style="color:var(--slate);margin-bottom:0.7rem;line-height:1.75;">
+        Smaller groups for something more personal. Each person picks one or two of the prompts below. 
+        No pressure to answer all of them — depth over breadth.
+      </p>
+
+      <div class="pass-reminder">
+        <span class="sym">◇</span>
+        <div>These prompts are optional. Share what feels okay to share. You don't owe anyone access to your interior life.</div>
+      </div>
+
+      <div class="discussion-list">
+
+        <div class="d-card lav">
+          <div class="q-label">Sensory</div>
+          <p>Is there a kind of touch or physical closeness that you actually like or find grounding? Is there one that's hard to tolerate even when you want to be close to someone?</p>
+        </div>
+
+        <div class="d-card lav">
+          <div class="q-label">Parallel play</div>
+          <p>Do you have relationships where you feel connected without a lot of talking or direct interaction — just being in the same space, doing your own thing? What does that feel like compared to more "active" closeness?</p>
+        </div>
+
+        <div class="d-card">
+          <div class="q-label">Love languages</div>
+          <p>How do you actually show people you care about them — the real ways, not the expected ways? Has that ever been recognized, or does it mostly go unnoticed?</p>
+        </div>
+
+        <div class="d-card">
+          <div class="q-label">The ask</div>
+          <p>Is there something you wish the people close to you understood about how you connect — something you've never quite been able to explain?</p>
+        </div>
+
+        <div class="d-card teal">
+          <div class="q-label">A moment</div>
+          <p>Think of a time when connection actually worked — when you felt genuinely close to someone, or they understood you without you having to explain. What made that possible?</p>
+        </div>
+
+        <div class="d-card teal">
+          <div class="q-label">Going forward</div>
+          <p>Is there one small thing you could do — or ask for — that might make closeness a bit less effortful for you in your current relationships?</p>
+        </div>
+
+      </div>
+
+      <div class="fac-toggle" style="margin-top:1.2rem;">
+        <button class="fac-toggle-btn" onclick="toggleFac(this)">▶ Facilitator notes</button>
+        <div class="fac-toggle-content">
+          <strong>Grouping:</strong> Let people choose their own partners if possible — 
+          this topic has a higher vulnerability load and self-selection matters. <br><br>
+          <strong>Prompts 4 and 5</strong> ("the ask" and "a moment") tend to go deepest. 
+          If you have a shorter breakout window, point pairs toward one of these two rather 
+          than leaving them to scroll. <br><br>
+          <strong>Debrief:</strong> When you bring the group back together, open with 
+          "What came up — anything you want to bring back to the room?" rather than 
+          asking people to report what their partner said.
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-secondary" onclick="goTo(2)">← Large Group</button>
+      <button class="btn-primary"   onclick="goTo(4)">Closing →</button>
+    </div>
+
+  </div><!-- /page3 -->
+
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- PAGE 4 · CLOSING                        -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="page" id="page4">
+
+    <div class="card">
+      <h2>
+        <div class="icon-circle icon-warm">◆</div>
+        Things Worth Carrying Out
+      </h2>
+
+      <div class="affirmation-list">
+        <div class="aff-item">
+          <span class="aff-sym">◆</span>
+          <div>Wanting connection and finding connection hard are not contradictions. They can both be true at the same time.</div>
+        </div>
+        <div class="aff-item">
+          <span class="aff-sym">◆</span>
+          <div>The way you show care is real, even when other people don't recognize the form it comes in.</div>
+        </div>
+        <div class="aff-item">
+          <span class="aff-sym">◆</span>
+          <div>Needing space is not the same as not needing people. Regulating before reconnecting is a valid way to repair.</div>
+        </div>
+        <div class="aff-item">
+          <span class="aff-sym">◆</span>
+          <div>You are not broken at connection. You are connecting in a language that wasn't included in the default dictionary.</div>
+        </div>
+        <div class="aff-item">
+          <span class="aff-sym">◆</span>
+          <div>The gap has two sides. You are not responsible for the whole distance.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card lav">
+      <h2>
+        <div class="icon-circle icon-lav">✦</div>
+        Closing Script
+        <span class="timing-badge">3–5 min</span>
+      </h2>
+
+      <div class="closing-script">
+        "We've been talking today about something most of us have navigated quietly for a long time — 
+        the gap between what we feel and what gets through, and what comes in. 
+        <br><br>
+        I want to name that showing up to this kind of conversation is itself a form of reaching toward connection. 
+        You didn't have to be here, and you are. That matters.
+        <br><br>
+        Take a moment before you leave today to notice: is there one thing from this session — 
+        something someone said, something that surfaced for you — that you want to hold onto? 
+        You don't have to share it. Just notice it.
+        <br><br>
+        <strong>Thank you for being in the room with each other today.</strong>"
+      </div>
+
+      <div style="margin-top:1.4rem;">
+        <p style="color:var(--slate);font-weight:600;margin-bottom:0.75rem;">Closing check-out (optional, one word or one sentence each):</p>
+        <div class="d-card lav">
+          <div class="q-label">Check-out</div>
+          <p>One word for how you're leaving, or something you're taking with you from today.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card teal">
+      <h2>
+        <div class="icon-circle icon-teal">◉</div>
+        Looking Ahead
+      </h2>
+      <p style="color:var(--slate);line-height:1.75;margin-bottom:1rem;">
+        Natural threads to continue in future sessions:
+      </p>
+      <div class="info-block teal">
+        <h3>Related topics from the ND library</h3>
+        <ul>
+          <li><strong>Masking &amp; Unmasking</strong> — how performing neurotypicality shapes relationship patterns</li>
+          <li><strong>Rejection Sensitivity</strong> — when misread bids for connection become a source of shame</li>
+          <li><strong>ND Shame</strong> — the "too much / not enough" story that shapes how people risk closeness</li>
+        </ul>
+      </div>
+      <div class="fac-toggle">
+        <button class="fac-toggle-btn" onclick="toggleFac(this)">▶ Facilitator note</button>
+        <div class="fac-toggle-content">
+          This session pairs most naturally with Masking next — many intimacy patterns are downstream of 
+          the masking question (who do I let in, and which version of me do they get?). 
+          RSD also connects directly: the fear of being misread or rejected is often a major barrier 
+          to attempting connection at all.
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row" style="justify-content:flex-start;">
+      <button class="btn-secondary" onclick="goTo(3)">← Breakouts</button>
+    </div>
+
+  </div><!-- /page4 -->
+
+</div><!-- /container -->
+
+<footer>
+  <p>ND Affinity Group &nbsp;·&nbsp; Facilitator: Brian Nuckols &nbsp;·&nbsp; Center for Discovery</p>
+  <p style="margin-top:0.4rem;">
+    If you're in crisis or need immediate support:
+    <a href="tel:988">988 Suicide &amp; Crisis Lifeline</a> &nbsp;|&nbsp;
+    <a href="tel:741741">Crisis Text Line: text HOME to 741741</a>
+  </p>
+</footer>
+
+<script>
+  const pages     = document.querySelectorAll('.page');
+  const pills     = document.querySelectorAll('.nav-pill');
+  const fill      = document.getElementById('progressFill');
+  const pct       = [20, 40, 60, 80, 100];
+
+  function goTo(i) {
+    pages.forEach((p, idx) => p.classList.toggle('active', idx === i));
+    pills.forEach((p, idx) => p.classList.toggle('active', idx === i));
+    fill.style.width = pct[i] + '%';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function toggleFac(btn) {
+    const content = btn.nextElementSibling;
+    content.classList.toggle('open');
+    btn.textContent = content.classList.contains('open')
+      ? btn.textContent.replace('▶', '▼')
+      : btn.textContent.replace('▼', '▶');
+  }
+</script>
+</body>
+</html>
